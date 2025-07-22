@@ -1,0 +1,10 @@
+
+<h2>Aufgabenliste</h2>
+<p>Total Tasks: {{ tasks.length }}</p>  <!-- Zeigt Anzahl der Aufgaben -->
+<ul>
+  <li *ngFor="let task of tasks">
+    <strong>{{ task.title }}</strong> ({{ task.priority }}) – Status: {{ task.status }}
+    <p>{{ task.description }}</p>
+  </li>
+</ul>
+
