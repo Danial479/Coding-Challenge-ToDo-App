@@ -1,0 +1,26 @@
+h2 {
+    color: #3979c2;
+    letter-spacing: 12px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+ul {
+    padding: 02svb;
+    list-style: lower-roman;
+    max-width: 600px;
+    margin: 2vmax;
+    color: #dce6d7
+    
+}
+
+li {
+    background: #1a8dcf;
+    margin-bottom: 2rem;
+    padding: 2em;
+    border-radius: 80px;
+    border-left: 200px solid #8abae4;
+    box-shadow: 0 1px 4px rgba(2, 222, 220, 99);
+    transition: background 0.2s
+
+
+}
