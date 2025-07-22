@@ -1,0 +1,87 @@
+<h2>➕ Neue Aufgabe hinzufügen</h2>
+
+<form (ngSubmit)="addNewTask()">
+  <input [(ngModel)]="newTask.title" name="title" placeholder="Titel" required />
+  <input [(ngModel)]="newTask.description" name="description" placeholder="Beschreibung" />
+  <select [(ngModel)]="newTask.priority" name="priority">
+    <option value="hoch">hoch</option>
+    <option value="mittel">mittel</option>
+    <option value="niedrig">niedrig</option>
+  </select>
+  <input type="date" [(ngModel)]="newTask.deadline" name="deadline" placeholder="Deadline" />
+  <button type="submit">Hinzufügen</button>
+</form>
+
+<hr />
+
+<!-- Such- und Filterbereich -->
+<div class="filter-container" style="margin-bottom: 1rem;">
+  <input 
+    type="text" 
+    [(ngModel)]="searchText" 
+    placeholder="🔍 Suche nach Titel oder Beschreibung" 
+    style="padding: 0.3rem; width: 40%; margin-right: 1rem;" />
+  
+  <select [(ngModel)]="statusFilter" style="padding: 0.3rem; margin-right: 1rem;">
+    <option value="">Alle Status</option>
+    <option value="open">Offen</option>
+    <option value="done">Erledigt</option>
+  </select>
+
+  <select [(ngModel)]="priorityFilter" style="padding: 0.3rem;">
+    <option value="">Alle Prioritäten</option>
+    <option value="hoch">hoch</option>
+    <option value="mittel">mittel</option>
+    <option value="niedrig">niedrig</option>
+  </select>
+</div>
+
+<h1>📝 Aufgabenliste</h1>
+
+<ul style="list-style-type: none; padding-left: 0;">
+  <li *ngFor="let task of filteredTasks" style="margin-bottom: 1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">
+    <!-- Anzeige im normalen Modus -->
+    <div *ngIf="editTaskId !== task.id" style="display: flex; align-items: center; justify-content: space-between;">
+      <span
+        [ngStyle]="{
+          color: task.status === 'done' ? 'gray' : 
+                 (task.priority === 'hoch' ? 'red' : 
+                 task.priority === 'mittel' ? 'orange' : 'green'),
+          textDecoration: task.status === 'done' ? 'line-through' : 'none',
+          fontWeight: 'bold'
+        }">
+        {{ task.title }} – {{ task.status }} – {{ task.priority }}
+        <span *ngIf="task.deadline"> (Deadline: {{ task.deadline }})</span>
+      </span>
+
+      <div>
+        <button (click)="toggleStatus(task)" title="Status wechseln" style="margin-right: 0.5rem;">
+          {{ task.status === 'open' ? 'Erledigen' : 'Wieder öffnen' }}
+        </button>
+        <button (click)="editTask(task)" title="Bearbeiten" style="margin-right: 0.5rem;">Bearbeiten</button>
+        <button (click)="deleteTask(task.id)" title="Löschen" style="color: red;">Löschen</button>
+      </div>
+    </div>
+
+    <!-- Anzeige im Bearbeitungsmodus -->
+    <div *ngIf="editTaskId === task.id" style="display: flex; flex-direction: column; gap: 0.5rem;">
+      <input [(ngModel)]="task.title" placeholder="Titel" />
+      <input [(ngModel)]="task.description" placeholder="Beschreibung" />
+      <select [(ngModel)]="task.priority">
+        <option value="hoch">hoch</option>
+        <option value="mittel">mittel</option>
+        <option value="niedrig">niedrig</option>
+      </select>
+      <input type="date" [(ngModel)]="task.deadline" />
+      <select [(ngModel)]="task.status">
+        <option value="open">offen</option>
+        <option value="done">erledigt</option>
+      </select>
+      <div>
+        <button (click)="saveTask(task)" style="margin-right: 0.5rem;">💾 Speichern</button>
+        <button (click)="cancelEdit()">✖ Abbrechen</button>
+      </div>
+    </div>
+  </li>
+</ul>
+<button (click)="confirmDelete(task.id)">Löschen</button>
